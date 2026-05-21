@@ -5,46 +5,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Student Assistant</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="styles/main.css"/>
 </head>
 <body>
 
 <!-- LOADER -->
 <div id="loader">
-  <div class="loader-logo">🤖</div>
-  <div class="loader-title">AI STUDENT ASSISTANT</div>
+  <div class="loader-mark"></div>
+  <div class="loader-title">AI Student Assistant</div>
   <div class="loader-dots"><span></span><span></span><span></span></div>
 </div>
 
-<!-- TOAST -->
 <div id="toast-container"></div>
 
 <!-- ══ LANDING ══════════════════════════════════════════════════════════ -->
 <div id="page-landing" class="page active">
   <nav class="nav">
-    <div class="nav-logo">🤖 StudyBot</div>
+    <div class="nav-logo">
+      <div class="nav-logo-mark">A</div>
+      StudyAI
+    </div>
     <div class="nav-actions">
-      <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Сменить тему">☀️</button>
+      <button class="btn-icon" id="theme-btn-land" onclick="toggleTheme()">☀️</button>
       <button class="btn btn-ghost" onclick="showPage('page-login')">Войти</button>
-      <button class="btn btn-primary" onclick="showPage('page-register')">Регистрация</button>
+      <button class="btn btn-primary" onclick="showPage('page-register')">Начать →</button>
     </div>
   </nav>
+
   <div class="landing-hero">
-    <div class="hero-badge">✨ Powered by Gemini AI</div>
-    <h1 class="hero-title">Ваш умный<br/><span class="gradient-text">помощник для учёбы</span></h1>
-    <p class="hero-sub">Объясняет темы, пишет конспекты, генерирует код, анализирует PDF — всё в одном месте</p>
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Доступно прямо сейчас
+    </div>
+
+    <h1 class="hero-title">
+      Учись умнее<br/>с <em>AI-помощником</em>
+    </h1>
+
+    <p class="hero-sub">
+      Объясняет сложные темы, генерирует конспекты, пишет код и анализирует твои документы — всё в одном месте.
+    </p>
+
     <div class="hero-btns">
       <button class="btn btn-primary btn-lg" onclick="showPage('page-register')">Начать бесплатно →</button>
       <button class="btn btn-ghost btn-lg" onclick="showPage('page-login')">Войти в аккаунт</button>
     </div>
+
     <div class="features-grid">
-      <div class="feature-card"><span class="feature-icon">💬</span><h3>AI-Чат</h3><p>Задавай любые вопросы по учёбе</p></div>
-      <div class="feature-card"><span class="feature-icon">📄</span><h3>Анализ PDF</h3><p>Загрузи файл — AI сделает конспект</p></div>
-      <div class="feature-card"><span class="feature-icon">📝</span><h3>Конспекты</h3><p>Генерация и хранение материалов</p></div>
-      <div class="feature-card"><span class="feature-icon">💻</span><h3>Генерация кода</h3><p>Python, JS, C++, SQL — любой язык</p></div>
-      <div class="feature-card"><span class="feature-icon">📅</span><h3>Расписание</h3><p>Пары, дедлайны, экзамены</p></div>
-      <div class="feature-card"><span class="feature-icon">✅</span><h3>Задания</h3><p>Отслеживай дедлайны и прогресс</p></div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>AI-Чат</h3>
+        <p>Задавай любые вопросы по учёбе и получай точные ответы мгновенно</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>Анализ файлов</h3>
+        <p>Загружай PDF и DOCX — AI автоматически создаёт конспект</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3>Конспекты</h3>
+        <p>Генерация, хранение и редактирование учебных материалов</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💻</div>
+        <h3>Код</h3>
+        <p>Python, JavaScript, C++, SQL — пишет и объясняет любой код</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Расписание</h3>
+        <p>Все пары, дедлайны и экзамены в одном месте</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✦</div>
+        <h3>AI-память</h3>
+        <p>Запоминает твои предметы и подстраивается под стиль обучения</p>
+      </div>
     </div>
   </div>
 </div>
@@ -53,9 +91,15 @@
 <div id="page-login" class="page">
   <div class="auth-wrap">
     <div class="auth-card">
-      <div class="auth-logo">🤖</div>
-      <h2 class="auth-title">Вход в аккаунт</h2>
-      <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="student@uni.ru"/></div>
+      <div class="auth-logo">
+        <div class="auth-logo-mark">A</div>
+        <span class="auth-logo-name">StudyAI</span>
+      </div>
+      <div>
+        <h2 class="auth-title">Добро пожаловать</h2>
+        <p class="auth-sub">Войди в свой аккаунт чтобы продолжить</p>
+      </div>
+      <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="you@university.ru"/></div>
       <div class="form-group"><label>Пароль</label><input type="password" id="login-password" placeholder="••••••••"/></div>
       <button class="btn btn-primary w-full" onclick="doLogin()">Войти</button>
       <p class="auth-switch">Нет аккаунта? <a href="#" onclick="showPage('page-register')">Зарегистрироваться</a></p>
@@ -68,11 +112,17 @@
 <div id="page-register" class="page">
   <div class="auth-wrap">
     <div class="auth-card">
-      <div class="auth-logo">🤖</div>
-      <h2 class="auth-title">Регистрация</h2>
+      <div class="auth-logo">
+        <div class="auth-logo-mark">A</div>
+        <span class="auth-logo-name">StudyAI</span>
+      </div>
+      <div>
+        <h2 class="auth-title">Создать аккаунт</h2>
+        <p class="auth-sub">Начни учиться умнее уже сегодня</p>
+      </div>
       <div class="form-grid">
         <div class="form-group"><label>Имя</label><input type="text" id="reg-name" placeholder="Иван Иванов"/></div>
-        <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="student@uni.ru"/></div>
+        <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="you@university.ru"/></div>
         <div class="form-group"><label>Пароль</label><input type="password" id="reg-password" placeholder="Минимум 6 символов"/></div>
         <div class="form-group"><label>Группа</label><input type="text" id="reg-group" placeholder="ИС-21"/></div>
         <div class="form-group form-full"><label>Факультет</label><input type="text" id="reg-faculty" placeholder="Информатика и вычислительная техника"/></div>
@@ -90,25 +140,48 @@
 
     <!-- Mobile header -->
     <div class="mobile-header">
-      <button class="btn btn-icon" onclick="toggleSidebar()">☰</button>
-      <span class="mobile-logo">🤖 StudyBot</span>
-      <button class="btn btn-icon" id="theme-btn-app" onclick="toggleTheme()">☀️</button>
+      <button class="btn-icon" onclick="toggleSidebar()">☰</button>
+      <span class="mobile-logo">StudyAI</span>
+      <button class="btn-icon" onclick="toggleTheme()">☀️</button>
     </div>
 
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
-      <div class="sidebar-logo">🤖 <span>StudyBot</span>
-        <button class="btn btn-icon sidebar-theme" onclick="toggleTheme()" id="theme-btn" title="Тема">☀️</button>
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-mark">A</div>
+        <span class="sidebar-logo-name">StudyAI</span>
+        <button class="btn-icon sidebar-theme" id="theme-btn" onclick="toggleTheme()">☀️</button>
       </div>
+
       <nav class="sidebar-nav">
-        <a class="nav-item active" data-section="chat"     onclick="switchSection('chat')">    <span class="ni">💬</span><span>AI-Чат</span></a>
-        <a class="nav-item"        data-section="notes"    onclick="switchSection('notes')">   <span class="ni">📝</span><span>Конспекты</span></a>
-        <a class="nav-item"        data-section="tasks"    onclick="switchSection('tasks')">   <span class="ni">✅</span><span>Задания</span></a>
-        <a class="nav-item"        data-section="schedule" onclick="switchSection('schedule')"><span class="ni">📅</span><span>Расписание</span></a>
-        <a class="nav-item"        data-section="files"    onclick="switchSection('files')">   <span class="ni">📁</span><span>Файлы</span></a>
-        <a class="nav-item"        data-section="profile"  onclick="switchSection('profile')"> <span class="ni">👤</span><span>Профиль</span></a>
-        <a class="nav-item" id="admin-link" data-section="admin" onclick="switchSection('admin')" style="display:none"><span class="ni">⚙️</span><span>Админ</span></a>
+        <div class="sidebar-section">Главное</div>
+        <a class="nav-item active" data-section="chat" onclick="switchSection('chat')">
+          <span class="ni">💬</span><span>AI-Чат</span>
+        </a>
+        <a class="nav-item" data-section="notes" onclick="switchSection('notes')">
+          <span class="ni">📝</span><span>Конспекты</span>
+        </a>
+
+        <div class="sidebar-section">Учёба</div>
+        <a class="nav-item" data-section="tasks" onclick="switchSection('tasks')">
+          <span class="ni">✅</span><span>Задания</span>
+        </a>
+        <a class="nav-item" data-section="schedule" onclick="switchSection('schedule')">
+          <span class="ni">📅</span><span>Расписание</span>
+        </a>
+        <a class="nav-item" data-section="files" onclick="switchSection('files')">
+          <span class="ni">📁</span><span>Файлы</span>
+        </a>
+
+        <div class="sidebar-section">Аккаунт</div>
+        <a class="nav-item" data-section="profile" onclick="switchSection('profile')">
+          <span class="ni">👤</span><span>Профиль</span>
+        </a>
+        <a class="nav-item" id="admin-link" data-section="admin" onclick="switchSection('admin')" style="display:none">
+          <span class="ni">⚙️</span><span>Админ</span>
+        </a>
       </nav>
+
       <div class="sidebar-user">
         <img id="sidebar-avatar" src="" alt="avatar" class="user-avatar-sm"/>
         <div class="sidebar-user-info">
@@ -119,7 +192,6 @@
       </div>
     </aside>
 
-    <!-- Sidebar overlay for mobile -->
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <!-- MAIN -->
@@ -130,45 +202,46 @@
         <div class="chat-layout">
           <div class="chat-sidebar">
             <div class="chat-sidebar-header">
-              <span>Чаты</span>
-              <button class="btn btn-sm btn-primary" onclick="newChat()">+ Новый</button>
+              <span>История</span>
+              <button class="btn btn-sm btn-ghost" onclick="newChat()">+ Новый</button>
             </div>
             <div id="chat-list" class="chat-list"></div>
           </div>
           <div class="chat-area">
             <div class="chat-header">
-              <div id="chat-title">Новый чат</div>
+              <div id="chat-title" style="font-size:.85rem">Новый чат</div>
               <div class="chat-header-actions">
                 <button class="btn btn-sm btn-ghost" onclick="saveAsNote()" title="Сохранить как конспект">📝</button>
-                <button class="btn btn-sm btn-danger" onclick="deleteChatCurrent()" title="Удалить чат">🗑</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteChatCurrent()" title="Удалить">🗑</button>
               </div>
             </div>
             <div id="messages" class="messages">
               <div class="chat-welcome">
-                <div class="welcome-icon">🤖</div>
-                <h3>Привет! Я StudyBot</h3>
-                <p>Задай любой вопрос по учёбе, загрузи PDF или попроси написать код</p>
+                <div class="welcome-mark">A</div>
+                <h3>Чем могу помочь?</h3>
+                <p>Задай вопрос по учёбе, загрузи документ или попроси написать код</p>
                 <div class="quick-prompts">
-                  <button onclick="quickPrompt('Объясни что такое SQL JOIN с примерами')">💾 SQL JOIN</button>
-                  <button onclick="quickPrompt('Напиши функцию на Python для сортировки списка')">🐍 Python код</button>
-                  <button onclick="quickPrompt('Объясни теорему Пифагора простыми словами')">📐 Математика</button>
-                  <button onclick="quickPrompt('Создай шпаргалку по HTTP методам')">📋 HTTP методы</button>
+                  <button onclick="quickPrompt('Объясни что такое SQL JOIN с примерами')">SQL JOIN</button>
+                  <button onclick="quickPrompt('Напиши функцию сортировки на Python')">Python код</button>
+                  <button onclick="quickPrompt('Объясни теорему Пифагора простыми словами')">Математика</button>
+                  <button onclick="quickPrompt('Создай шпаргалку по HTTP методам')">HTTP шпаргалка</button>
+                  <button onclick="quickPrompt('Как работает рекурсия? Объясни с примером')">Рекурсия</button>
                 </div>
               </div>
             </div>
             <div id="file-preview-bar" class="file-preview-bar" style="display:none">
-              <span id="file-preview-name">📄 файл.pdf</span>
+              <span id="file-preview-name">файл.pdf</span>
               <button onclick="clearFileContext()">✕</button>
             </div>
             <div class="chat-input-wrap">
-              <label class="attach-btn" title="Загрузить файл (PDF, DOCX, TXT)">
-                📎
+              <label class="attach-btn" title="Прикрепить файл (PDF, DOCX, TXT)">
+                ⊕
                 <input type="file" id="file-input" accept=".pdf,.docx,.txt" style="display:none" onchange="handleFileUpload(this)"/>
               </label>
-              <button class="attach-btn" id="mic-btn" title="Голосовой ввод" onclick="toggleVoice()">🎤</button>
-              <textarea id="chat-input" placeholder="Напиши вопрос... (Enter — отправить, Shift+Enter — новая строка)" rows="1"
+              <button class="attach-btn" id="mic-btn" title="Голосовой ввод" onclick="toggleVoice()">◎</button>
+              <textarea id="chat-input" placeholder="Напиши вопрос... (Enter — отправить)" rows="1"
                 onkeydown="handleChatKey(event)" oninput="autoResize(this)"></textarea>
-              <button class="send-btn" onclick="sendMessage()">➤</button>
+              <button class="send-btn" onclick="sendMessage()">↑</button>
             </div>
           </div>
         </div>
@@ -177,11 +250,11 @@
       <!-- NOTES -->
       <section id="section-notes" class="section">
         <div class="section-header">
-          <h2>📝 Конспекты</h2>
+          <h2>Конспекты</h2>
           <div class="section-actions">
-            <input type="text" id="notes-search" class="search-input" placeholder="🔍 Поиск..." oninput="searchNotes()"/>
-            <button class="btn btn-primary"  onclick="openNoteModal()">+ Создать</button>
-            <button class="btn btn-ghost"    onclick="openGenerateNoteModal()">✨ AI-генерация</button>
+            <input type="text" id="notes-search" class="search-input" placeholder="Поиск..." oninput="searchNotes()"/>
+            <button class="btn btn-ghost" onclick="openGenerateNoteModal()">✦ AI-генерация</button>
+            <button class="btn btn-primary" onclick="openNoteModal()">+ Создать</button>
           </div>
         </div>
         <div id="notes-grid" class="cards-grid"></div>
@@ -190,7 +263,7 @@
       <!-- TASKS -->
       <section id="section-tasks" class="section">
         <div class="section-header">
-          <h2>✅ Задания</h2>
+          <h2>Задания</h2>
           <button class="btn btn-primary" onclick="openTaskModal()">+ Добавить</button>
         </div>
         <div class="tasks-filter">
@@ -205,7 +278,7 @@
       <!-- SCHEDULE -->
       <section id="section-schedule" class="section">
         <div class="section-header">
-          <h2>📅 Расписание</h2>
+          <h2>Расписание</h2>
           <button class="btn btn-primary" onclick="openScheduleModal()">+ Добавить</button>
         </div>
         <div id="schedule-week" class="schedule-week"></div>
@@ -214,18 +287,18 @@
       <!-- FILES -->
       <section id="section-files" class="section">
         <div class="section-header">
-          <h2>📁 Файлы</h2>
-          <label class="btn btn-primary">📎 Загрузить
+          <h2>Файлы</h2>
+          <label class="btn btn-primary">⊕ Загрузить
             <input type="file" accept=".pdf,.docx,.txt" style="display:none" onchange="uploadFileSection(this)"/>
           </label>
         </div>
-        <div class="drop-zone" id="drop-zone">Перетащи файл сюда или нажми кнопку выше</div>
+        <div class="drop-zone" id="drop-zone">Перетащи файл сюда · PDF, DOCX, TXT</div>
         <div id="files-grid" class="cards-grid"></div>
       </section>
 
       <!-- PROFILE -->
       <section id="section-profile" class="section">
-        <div class="section-header"><h2>👤 Профиль</h2></div>
+        <div class="section-header"><h2>Профиль</h2></div>
         <div class="profile-layout">
           <div class="profile-card">
             <label class="avatar-upload-label">
@@ -261,16 +334,16 @@
               <div class="form-group"><label>Текущий пароль</label><input id="pw-old" type="password"/></div>
               <div class="form-group"><label>Новый пароль</label><input id="pw-new" type="password"/></div>
             </div>
-            <button class="btn btn-primary" onclick="changePassword()">Изменить пароль</button>
+            <button class="btn btn-primary" onclick="changePassword()">Изменить</button>
           </div>
         </div>
       </section>
 
       <!-- ADMIN -->
       <section id="section-admin" class="section">
-        <div class="section-header"><h2>⚙️ Администратор</h2></div>
+        <div class="section-header"><h2>Администратор</h2></div>
         <div class="admin-stats" id="admin-stats-grid"></div>
-        <h3 style="margin:24px 0 12px;color:var(--text2)">Пользователи</h3>
+        <h3 style="margin:20px 0 10px;font-size:.85rem;color:var(--text2)">Пользователи</h3>
         <div id="admin-users-table"></div>
       </section>
 
@@ -295,20 +368,20 @@
 
 <div id="modal-gen-note" class="modal-overlay" onclick="closeModal('modal-gen-note')">
   <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-header"><h3>✨ AI-генерация конспекта</h3><button onclick="closeModal('modal-gen-note')">✕</button></div>
-    <div class="form-group"><label>Тема</label><input id="gen-topic" type="text" placeholder="SQL JOIN-ы, функции Python..."/></div>
-    <div class="form-group"><label>Тип</label>
+    <div class="modal-header"><h3>✦ AI-генерация</h3><button onclick="closeModal('modal-gen-note')">✕</button></div>
+    <div class="form-group"><label>Тема</label><input id="gen-topic" type="text" placeholder="SQL JOIN, функции Python, интегралы..."/></div>
+    <div class="form-group"><label>Тип материала</label>
       <select id="gen-type">
         <option value="конспект">Конспект</option>
         <option value="шпаргалка">Шпаргалка</option>
-        <option value="план">План</option>
-        <option value="тест">Тест</option>
+        <option value="план">План изучения</option>
+        <option value="тест">Тест с вопросами</option>
         <option value="краткий пересказ">Краткий пересказ</option>
       </select>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-gen-note')">Отмена</button>
-      <button class="btn btn-primary" id="gen-note-btn" onclick="generateNote()">✨ Генерировать</button>
+      <button class="btn btn-primary" id="gen-note-btn" onclick="generateNote()">✦ Генерировать</button>
     </div>
   </div>
 </div>
@@ -375,7 +448,7 @@
     <div class="modal-header">
       <h3 id="note-view-title">Конспект</h3>
       <div style="display:flex;gap:8px">
-        <button class="btn btn-sm btn-ghost" onclick="exportNoteAsTxt()">⬇ Скачать</button>
+        <button class="btn btn-sm btn-ghost" onclick="exportNoteAsTxt()">↓ Скачать</button>
         <button onclick="closeModal('modal-note-view')">✕</button>
       </div>
     </div>
@@ -394,10 +467,7 @@
 <script src="components/admin.js"></script>
 <script src="components/app.js"></script>
 <script>
-// Quick prompts helper
 function quickPrompt(text) {
-  const el = document.getElementById('chat-welcome');
-  if (el) el.style.display = 'none';
   document.querySelector('.chat-welcome')?.remove();
   document.getElementById('chat-input').value = text;
   sendMessage();
