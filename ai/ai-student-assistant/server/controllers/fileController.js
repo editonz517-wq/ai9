@@ -8,8 +8,12 @@ const { summarizeDocument } = require('../services/aiService');
 
 // Multer storage config
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, path.join(__dirname, '../uploads')),
-  filename:    (req, file, cb) => {
+  destination: (req, file, cb) => {
+    const uploadDir = path.join(__dirname, '../uploads');
+    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
     const unique = Date.now() + '-' + Math.round(Math.random() * 1e6);
     cb(null, unique + path.extname(file.originalname));
   }
@@ -18,7 +22,7 @@ const fileFilter = (req, file, cb) => {
   const allowed = ['application/pdf', 'application/msword',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     'text/plain'];
-  allowed.includes(file.mimetype) ? cb(null, true) : cb(new Error('Неподдерживаемый формат файла'));
+  allowed.includes(file.mimetype) ? cb(null, true) : cb(new Error('Поддерживаются только PDF, DOCX, TXT'));
 };
 exports.upload = multer({ storage, fileFilter, limits: { fileSize: 20 * 1024 * 1024 } });
 
@@ -31,23 +35,42 @@ exports.uploadFile = async (req, res) => {
     const filePath = req.file.path;
     const mime = req.file.mimetype;
 
-    if (mime === 'text/plain') {
-      extractedText = fs.readFileSync(filePath, 'utf-8');
-    } else if (mime === 'application/pdf') {
-      const pdfParse = require('pdf-parse');
-      const buffer = fs.readFileSync(filePath);
-      const data = await pdfParse(buffer);
-      extractedText = data.text;
-    } else if (mime.includes('word') || mime.includes('wordprocessingml')) {
-      const mammoth = require('mammoth');
-      const result = await mammoth.extractRawText({ path: filePath });
-      extractedText = result.value;
+    try {
+      if (mime === 'text/plain') {
+        extractedText = fs.readFileSync(filePath, 'utf-8');
+      } else if (mime === 'application/pdf') {
+        try {
+          const pdfParse = require('pdf-parse');
+          const buffer = fs.readFileSync(filePath);
+          const data = await pdfParse(buffer);
+          extractedText = data.text || '';
+        } catch (e) {
+          console.log('pdf-parse error:', e.message);
+          extractedText = '';
+        }
+      } else if (mime.includes('word') || mime.includes('wordprocessingml')) {
+        try {
+          const mammoth = require('mammoth');
+          const result = await mammoth.extractRawText({ path: filePath });
+          extractedText = result.value || '';
+        } catch (e) {
+          console.log('mammoth error:', e.message);
+          extractedText = '';
+        }
+      }
+    } catch (parseErr) {
+      console.log('File parse error:', parseErr.message);
+      extractedText = '';
     }
 
-    // Auto-summarize
+    // Auto-summarize if text extracted
     let summary = '';
     if (extractedText.length > 200) {
-      summary = await summarizeDocument(extractedText);
+      try {
+        summary = await summarizeDocument(extractedText);
+      } catch (e) {
+        console.log('Summarize error:', e.message);
+      }
     }
 
     const file = await File.create({
@@ -61,7 +84,7 @@ exports.uploadFile = async (req, res) => {
       path:          filePath
     });
 
-    // If asked to save as note
+    // Save as note if summarized
     if (summary) {
       await Note.create({
         user:    req.user._id,
@@ -73,10 +96,14 @@ exports.uploadFile = async (req, res) => {
 
     await User.findByIdAndUpdate(req.user._id, { $inc: { 'stats.filesUploaded': 1 } });
 
-    res.status(201).json({ file, summary, extractedText: extractedText.slice(0, 2000) });
+    res.status(201).json({
+      file,
+      summary,
+      extractedText: extractedText.slice(0, 2000)
+    });
   } catch (err) {
     console.error('File upload error:', err);
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: 'Ошибка загрузки файла: ' + err.message });
   }
 };
 
