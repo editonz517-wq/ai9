@@ -6,7 +6,6 @@ const Note   = require('../models/Notes');
 const User   = require('../models/User');
 const { summarizeDocument } = require('../services/aiService');
 
-// Multer storage config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = path.join(__dirname, '../uploads');
@@ -18,18 +17,31 @@ const storage = multer.diskStorage({
     cb(null, unique + path.extname(file.originalname));
   }
 });
+
 const fileFilter = (req, file, cb) => {
   const allowed = ['application/pdf', 'application/msword',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     'text/plain'];
   allowed.includes(file.mimetype) ? cb(null, true) : cb(new Error('Поддерживаются только PDF, DOCX, TXT'));
 };
+
 exports.upload = multer({ storage, fileFilter, limits: { fileSize: 20 * 1024 * 1024 } });
 
-// POST /api/files/upload
+// Decode filename from latin1 to utf8 (fix Cyrillic)
+function fixFilename(name) {
+  try {
+    return Buffer.from(name, 'latin1').toString('utf8');
+  } catch {
+    return name;
+  }
+}
+
 exports.uploadFile = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'Файл не загружен' });
+
+    // Fix Cyrillic filename encoding
+    const originalName = fixFilename(req.file.originalname);
 
     let extractedText = '';
     const filePath = req.file.path;
@@ -46,7 +58,6 @@ exports.uploadFile = async (req, res) => {
           extractedText = data.text || '';
         } catch (e) {
           console.log('pdf-parse error:', e.message);
-          extractedText = '';
         }
       } else if (mime.includes('word') || mime.includes('wordprocessingml')) {
         try {
@@ -55,15 +66,12 @@ exports.uploadFile = async (req, res) => {
           extractedText = result.value || '';
         } catch (e) {
           console.log('mammoth error:', e.message);
-          extractedText = '';
         }
       }
-    } catch (parseErr) {
-      console.log('File parse error:', parseErr.message);
-      extractedText = '';
+    } catch (e) {
+      console.log('Parse error:', e.message);
     }
 
-    // Auto-summarize if text extracted
     let summary = '';
     if (extractedText.length > 200) {
       try {
@@ -74,8 +82,8 @@ exports.uploadFile = async (req, res) => {
     }
 
     const file = await File.create({
-      user:          req.user._id,
-      originalName:  req.file.originalname,
+      user: req.user._id,
+      originalName,
       storedName:    req.file.filename,
       mimetype:      mime,
       size:          req.file.size,
@@ -84,11 +92,10 @@ exports.uploadFile = async (req, res) => {
       path:          filePath
     });
 
-    // Save as note if summarized
     if (summary) {
       await Note.create({
         user:    req.user._id,
-        title:   `Конспект: ${req.file.originalname}`,
+        title:   `Конспект: ${originalName}`,
         content: summary,
         source:  'file'
       });
@@ -96,18 +103,13 @@ exports.uploadFile = async (req, res) => {
 
     await User.findByIdAndUpdate(req.user._id, { $inc: { 'stats.filesUploaded': 1 } });
 
-    res.status(201).json({
-      file,
-      summary,
-      extractedText: extractedText.slice(0, 2000)
-    });
+    res.status(201).json({ file, summary, extractedText: extractedText.slice(0, 2000) });
   } catch (err) {
     console.error('File upload error:', err);
-    res.status(500).json({ message: 'Ошибка загрузки файла: ' + err.message });
+    res.status(500).json({ message: 'Ошибка загрузки: ' + err.message });
   }
 };
 
-// GET /api/files
 exports.getFiles = async (req, res) => {
   try {
     const files = await File.find({ user: req.user._id }).sort({ createdAt: -1 });
@@ -117,7 +119,6 @@ exports.getFiles = async (req, res) => {
   }
 };
 
-// DELETE /api/files/:id
 exports.deleteFile = async (req, res) => {
   try {
     const file = await File.findOne({ _id: req.params.id, user: req.user._id });
